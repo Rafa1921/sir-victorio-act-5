@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Route Finder</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #eaf4e4; /* Greenish background */
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      body.light {
+        background-color: #eaf4e4;
+        color: #333;
+      }
+
+      body.dark {
+        background-color: #2c3e50;
+        color: #e6e6e6;
+      }
+
+      .container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+        transition: transform 0.3s ease;
+        position: relative;
+      }
+
+      .container:hover {
+        transform: scale(1.02);
+      }
+
+      h1 {
+        color: #27ae60; /* Green color for heading */
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-align: left;
+        color: #2ecc71; /* Greenish color for labels */
+        font-size: 16px;
+        transition: color 0.3s;
+      }
+
+      label:hover {
+        color: #27ae60; /* Darker green on hover */
+      }
+
+      .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+      }
+
+      .form-group > div {
+        flex: 1 1 200px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+      }
+
+      input[type="text"]:focus,
+      select:focus {
+        border-color: #2ecc71;
+        outline: none;
+      }
+
+      button {
+        background-color: #2ecc71;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #27ae60;
+      }
+
+      .map-container {
+        width: 100%;
+        height: 300px;
+        background-color: #dcdcdc; /* Placeholder for the map */
+        margin-top: 30px;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body class="{{ session.get('theme', 'light') }}">
+    <div class="container">
+      <button id="theme-toggle">
+        Switch to {{ 'Light' if session.get('theme', 'light') == 'dark' else 'Dark' }} Mode
+      </button>
+
+      <script>
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+          window.location.href = "/toggle_theme";
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+          const theme = "{{ session.get('theme', 'light') }}";
+          document.body.className = theme;
+        });
+      </script>
+
+      <h1>Find Your Ideal Route</h1>
+      <form action="/route" method="POST" class="form-group">
+        <div>
+          <label for="start_location">Start Location:</label>
+          <input
+            type="text"
+            id="start_location"
+            name="start_location"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="end_location">End Location:</label>
+          <input type="text" id="end_location" name="end_location" required />
+        </div>
+
+        <div>
+          <label for="vehicle">Select Vehicle:</label>
+          <select id="vehicle" name="vehicle" required>
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+            <option value="foot">Foot</option>
+            <option value="scooter">Scooter</option>
+            <option value="truck">Truck</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="unit">Select Distance Unit:</label>
+          <select id="unit" name="unit" required>
+            <option value="km">Kilometers</option>
+            <option value="miles">Miles</option>
+            <option value="yards">Yards</option>
+            <option value="meters">Meters</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="date">Travel Date (Optional):</label>
+          <input type="text" id="date" name="date" placeholder="YYYY-MM-DD HH:MM:SS"><br><br>
+        </div>
+        
+        <button type="submit">Find Route</button>
+      </form>
+
+      <div class="map-container">
+        <!-- Placeholder for Map (You can replace this with a map like Google Maps or Leaflet later) -->
+        <p style="text-align: center; padding-top: 120px; color: #333;">Map will appear here</p>
+      </div>
+    </div>
+  </body>
+</html>
